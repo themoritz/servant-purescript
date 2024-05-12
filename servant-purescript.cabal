@@ -27,7 +27,7 @@ library
                      , Servant.API.BrowserHeader
 
 --  other-modules:       Main
-  build-depends:       base >= 4.7 && < 4.16
+  build-depends:       base >= 4.7 && < 4.18
                      , aeson >= 0.11.2
                      , bytestring
                      , containers
@@ -36,7 +36,7 @@ library
                      , http-types
                      , lens
                      , mainland-pretty
-                     , purescript-bridge >= 0.6
+                     , purescript-bridge >= 0.15
                      , servant >= 0.18
                      , servant-foreign
                      , servant-server

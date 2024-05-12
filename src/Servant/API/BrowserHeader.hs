@@ -11,6 +11,7 @@
 {-# LANGUAGE TypeOperators          #-}
 {-# LANGUAGE TypeApplications       #-}
 {-# LANGUAGE UndecidableInstances          #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Servant.API.BrowserHeader where
 
