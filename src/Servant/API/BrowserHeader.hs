@@ -9,10 +9,11 @@
 {-# LANGUAGE TypeFamilies           #-}
 {-# LANGUAGE TypeOperators          #-}
 {-# LANGUAGE UndecidableInstances          #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Servant.API.BrowserHeader where
 
-import Servant.Utils.Links
+import Servant.Links
 import Servant
 import Servant.Foreign
 import Servant.Subscriber.Subscribable
@@ -25,10 +26,14 @@ data BrowserHeader (sym :: Symbol) a
 type instance IsElem' e (BrowserHeader :> s) = IsElem e s
 
 instance HasLink sub => HasLink (BrowserHeader sym a :> sub) where
-    type MkLink (BrowserHeader sym a :> sub) = MkLink (Header sym a :> sub)
-    toLink _ = toLink (Proxy :: Proxy (Header sym a :> sub))
+    type MkLink (BrowserHeader sym a :> sub) b = MkLink (Header sym a :> sub) b
+    toLink toA Proxy = toLink toA (Proxy :: Proxy (Header sym a :> sub))
 
-instance (KnownSymbol sym, FromHttpApiData a, HasServer sublayout context)
+instance ( KnownSymbol sym
+         , FromHttpApiData a
+         , HasServer sublayout context
+         , HasContextEntry (context .++ DefaultErrorFormatters) ErrorFormatters
+         )
       => HasServer (BrowserHeader sym a :> sublayout) context where
 
   type ServerT (BrowserHeader sym a :> sublayout) m = ServerT (Header sym a :> sublayout) m
